@@ -6,10 +6,6 @@
 #include <stdio.h>
 #include "fmod_studio.h"
 
-FMOD_STUDIO_EVENTINSTANCE* RetrieveEvent(int key);
-FMOD_STUDIO_BUS* RetrieveBus(int key);
-FMOD_STUDIO_VCA* RetrieveVca(int key);
-
 bool InitFmod();
 bool UpdateFmod();
 bool ReleaseFmod();

@@ -47,7 +47,7 @@ struct vcaNode
 struct vcaNode* headVCA = NULL;
 int numVCA = 0;
 
-FMOD_STUDIO_EVENTINSTANCE* RetrieveEvent(int key)
+static FMOD_STUDIO_EVENTINSTANCE* RetrieveEvent(int key)
 {
     struct eventNode* current = headEvent;
     if(headEvent == NULL){return NULL;}
@@ -65,7 +65,7 @@ FMOD_STUDIO_EVENTINSTANCE* RetrieveEvent(int key)
     return current->event;
 }
 
-FMOD_STUDIO_BUS* RetrieveBus(int key)
+static FMOD_STUDIO_BUS* RetrieveBus(int key)
 {
     struct busNode* current = headBus;
     if(headBus == NULL){return NULL;}
@@ -83,7 +83,7 @@ FMOD_STUDIO_BUS* RetrieveBus(int key)
     return current->bus;
 }
 
-FMOD_STUDIO_VCA* RetrieveVca(int key)
+static FMOD_STUDIO_VCA* RetrieveVca(int key)
 {
     struct vcaNode* current = headVCA;
     if(headVCA == NULL){return NULL;}
@@ -99,6 +99,46 @@ FMOD_STUDIO_VCA* RetrieveVca(int key)
         }
     }
     return current->vca;
+}
+
+static void ReleaseBankList()
+{
+    while(!headBank == NULL)
+    {
+        struct bankNode* current = headBank;
+        headBank = current->next;
+        free(current);
+    }
+}
+
+static void ReleaseEventList()
+{
+    while(!headEvent == NULL)
+    {
+        struct eventNode* current = headEvent;
+        headEvent = current->next;
+        free(current);
+    }
+}
+
+static void ReleaseBusList()
+{
+    while(!headBus == NULL)
+    {
+        struct busNode* current = headBus;
+        headBus = current->next;
+        free(current);
+    }
+}
+
+static void ReleaseVcaList()
+{
+    while(!headVCA == NULL)
+    {
+        struct vcaNode* current = headVCA;
+        headVCA = current->next;
+        free(current);
+    }
 }
 /*
 ---------------------------------             FMOD STUDIO SYSTEM         --------------------------------
@@ -124,6 +164,10 @@ bool UpdateFmod()
 
 bool ReleaseFmod()
 {
+    ReleaseBankList();
+    ReleaseEventList();
+    ReleaseBusList();
+    ReleaseVcaList();
     FMOD_RESULT result = FMOD_Studio_System_Release(studioSystem);
     if(result != FMOD_OK){return false;}
     printf("FMOD RELEASED\n");
