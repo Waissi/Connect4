@@ -2,8 +2,8 @@
 
 int main()
 {
-    LoadGame();
-    LoopGame();
-    ReleaseGame();
+    load_game();
+    loop_game();
+    release_game();
     return 0;
 }

@@ -11,6 +11,6 @@
 
 extern struct Color currentPlayer;
 
-bool CompareColor(struct Color color1, struct Color color2);
+bool compare_color(struct Color color1, struct Color color2);
 
 #endif

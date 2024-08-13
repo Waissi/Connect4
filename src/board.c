@@ -3,7 +3,7 @@
 struct Slot board[BOARD_ROWS][BOARD_COLUMNS];
 struct Token lastMove;
 
-static bool _CheckDiagonalBottomLeftToUpRight()
+static bool diagonal_sw_ne_wins()
 {
     int total = 0;
     int rowOrigin = lastMove.row;
@@ -16,7 +16,7 @@ static bool _CheckDiagonalBottomLeftToUpRight()
     while (rowOrigin > -1 && columnOrigin < BOARD_COLUMNS)
     {
         struct Color currentColor = board[rowOrigin][columnOrigin].tokenColor;
-        if (CompareColor(currentColor, currentPlayer))
+        if (compare_color(currentColor, currentPlayer))
         {
             total++;
             if (total == 4)
@@ -35,7 +35,7 @@ static bool _CheckDiagonalBottomLeftToUpRight()
     return false;
 }
 
-static bool _CheckDiagonalBottomRightToUpLeft()
+static bool diagonal_se_nw_wins()
 {
     int total = 0;
     int rowOrigin = lastMove.row;
@@ -48,7 +48,7 @@ static bool _CheckDiagonalBottomRightToUpLeft()
     while (rowOrigin > -1 && columnOrigin > -1)
     {
         struct Color currentColor = board[rowOrigin][columnOrigin].tokenColor;
-        if (CompareColor(currentColor, currentPlayer))
+        if (compare_color(currentColor, currentPlayer))
         {
             total++;
             if (total == 4)
@@ -67,14 +67,14 @@ static bool _CheckDiagonalBottomRightToUpLeft()
     return false;
 }
 
-static bool _CheckHorizontal()
+static bool horizontal_wins()
 {
     int total = 0;
     struct Color currentColor;
     for (int column = 0; column < BOARD_COLUMNS; column++)
     {
         currentColor = board[lastMove.row][column].tokenColor;
-        if (CompareColor(currentColor, currentPlayer))
+        if (compare_color(currentColor, currentPlayer))
         {
             total++;
             if (total == 4)
@@ -91,14 +91,14 @@ static bool _CheckHorizontal()
     return false;
 }
 
-static bool _CheckVertical()
+static bool vertical_wins()
 {
     int total = 0;
     struct Color currentColor;
     for (int row = 0; row < BOARD_ROWS; row++)
     {
         currentColor = board[row][lastMove.column].tokenColor;
-        if (CompareColor(currentColor, currentPlayer))
+        if (compare_color(currentColor, currentPlayer))
         {
             total++;
             if (total == 4)
@@ -115,21 +115,21 @@ static bool _CheckVertical()
     return false;
 }
 
-static bool _IsColumnFull(int column)
+static bool is_column_full(int column)
 {
-    return (!CompareColor(board[0][column].tokenColor, BLACK));
+    return (!compare_color(board[0][column].tokenColor, BLACK));
 }
 
-static void _FillColumn(int column)
+static void fill_column(int column)
 {
     for (int row = BOARD_ROWS - 1; row > -1; row--)
     {
-        if (CompareColor(board[row][column].tokenColor, BLACK))
+        if (compare_color(board[row][column].tokenColor, BLACK))
         {
             board[row][column].tokenColor = currentPlayer;
             lastMove.row = row;
             lastMove.column = column;
-            if (_IsColumnFull(column))
+            if (is_column_full(column))
             {
                 board[row][column].slotColor = BOARD_COLOR;
             }
@@ -138,47 +138,31 @@ static void _FillColumn(int column)
     }
 }
 
-bool CheckVictory()
+bool last_move_wins()
 {
-    if (_CheckHorizontal())
-    {
-        return true;
-    }
-    if (_CheckVertical())
-    {
-        return true;
-    }
-    if (_CheckDiagonalBottomLeftToUpRight())
-    {
-        return true;
-    }
-    if (_CheckDiagonalBottomRightToUpLeft())
-    {
-        return true;
-    }
-    return false;
+    return horizontal_wins() || vertical_wins() || diagonal_sw_ne_wins() || diagonal_se_nw_wins();
 }
 
-bool CheckMousePressed()
+bool on_mouse_pressed()
 {
     for (int column = 0; column < BOARD_COLUMNS; column++)
     {
-        if (CompareColor(board[0][column].slotColor, currentPlayer))
+        if (compare_color(board[0][column].slotColor, currentPlayer))
         {
-            _FillColumn(column);
+            fill_column(column);
             return true;
         }
     }
     return false;
 }
 
-void CheckMouseOnBoard()
+void on_mouse_moved()
 {
     for (int column = 0; column < BOARD_COLUMNS; column++)
     {
         if (CheckCollisionPointRec(GetMousePosition(), board[0][column].drawRec))
         {
-            if (_IsColumnFull(column))
+            if (is_column_full(column))
             {
                 return;
             }
@@ -191,7 +175,7 @@ void CheckMouseOnBoard()
     }
 }
 
-void InitBoard()
+void init_board()
 {
     int posX = WINDOW_WIDTH / 2 - SLOT_WIDTH * BOARD_COLUMNS / 2;
     int posY = WINDOW_HEIGHT / 2 - SLOT_HEIGHT * BOARD_ROWS / 2;
@@ -213,7 +197,7 @@ void InitBoard()
     }
 }
 
-void DrawBoard()
+void draw_board()
 {
     for (int row = 0; row < BOARD_ROWS; row++)
     {

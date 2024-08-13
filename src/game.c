@@ -8,49 +8,49 @@ const char *yellowWins = "YELLOW WINS";
 const char *redWins = "RED WINS";
 const char *message = NULL;
 
-static void UpdateGame()
+static void update()
 {
-    CheckMouseOnBoard();
-    if (IsMouseButtonPressed(0) && CheckMousePressed())
+    on_mouse_moved();
+    if (IsMouseButtonPressed(0) && on_mouse_pressed())
     {
-        gameOver = CheckVictory();
-        if (gameOver)
+        if (last_move_wins())
         {
-            message = CompareColor(currentPlayer, YELLOW) ? yellowWins : redWins;
+            gameOver = true;
+            message = compare_color(currentPlayer, YELLOW) ? yellowWins : redWins;
             return;
         }
-        currentPlayer = CompareColor(currentPlayer, YELLOW) ? RED : YELLOW;
-        message = CompareColor(currentPlayer, YELLOW) ? yellowPlays : redPlays;
+        currentPlayer = compare_color(currentPlayer, YELLOW) ? RED : YELLOW;
+        message = compare_color(currentPlayer, YELLOW) ? yellowPlays : redPlays;
     }
 }
 
-static void DrawGame()
+static void draw()
 {
     BeginDrawing();
     ClearBackground(BLACK);
     DrawText(message, 0, 0, 20, currentPlayer);
-    DrawBoard();
+    draw_board();
     EndDrawing();
 }
 
-void LoadGame()
+void load_game()
 {
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Connect 4");
-    InitBoard();
+    init_board();
     message = yellowPlays;
 }
 
-void LoopGame()
+void loop_game()
 {
     while (!WindowShouldClose())
     {
         if (!gameOver)
-            UpdateGame();
-        DrawGame();
+            update();
+        draw();
     }
 }
 
-void ReleaseGame()
+void release_game()
 {
     CloseWindow();
 }

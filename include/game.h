@@ -6,8 +6,8 @@
 #include "globals.h"
 #include "board.h"
 
-void LoadGame();
-void LoopGame();
-void ReleaseGame();
+void load_game();
+void loop_game();
+void release_game();
 
 #endif
