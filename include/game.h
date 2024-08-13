@@ -1,16 +1,10 @@
-#ifndef GAME
-#define GAME
+#ifndef _GAME_H
+#define _GAME_H
 
 #include <stdlib.h>
 #include "raylib.h"
 #include "globals.h"
 #include "board.h"
-#include "fmodManager.h"
-#include "hud.h"
-
-void UpdateGame();
-void DrawGame();
-void NextTurn();
 
 void LoadGame();
 void LoopGame();

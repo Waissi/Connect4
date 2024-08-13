@@ -1,95 +1,56 @@
-#include "../include/game.h"
+#include "game.h"
 
-struct Vector2 WINDOW;
-struct Color player = YELLOW;
-enum State{PLAY, VICTORY};
-enum State gameState = PLAY;
-struct Hud* hud = NULL;
-const char* yellowPlayerMessage = "YELLOW PLAYER IS PLAYING";
-const char* redPlayerMessage = "RED PLAYER IS PLAYING";
-const char* yellowPlayerWins = "YELLOW PLAYER WINS";
-const char* redPlayerWins = "RED PLAYER WINS";
+bool gameOver = false;
+struct Color currentPlayer = YELLOW;
+const char *yellowPlays = "YELLOW IS PLAYING";
+const char *redPlays = "RED IS PLAYING";
+const char *yellowWins = "YELLOW WINS";
+const char *redWins = "RED WINS";
+const char *message = NULL;
 
-void NextTurn()
+static void UpdateGame()
 {
-    if (CompareColor(player, YELLOW))
+    CheckMouseOnBoard();
+    if (IsMouseButtonPressed(0) && CheckMousePressed())
     {
-        player = RED;
-        hud->message = redPlayerMessage;
-        return;
+        gameOver = CheckVictory();
+        if (gameOver)
+        {
+            message = CompareColor(currentPlayer, YELLOW) ? yellowWins : redWins;
+            return;
+        }
+        currentPlayer = CompareColor(currentPlayer, YELLOW) ? RED : YELLOW;
+        message = CompareColor(currentPlayer, YELLOW) ? yellowPlays : redPlays;
     }
-    player = YELLOW;
-    hud->message = yellowPlayerMessage;
+}
+
+static void DrawGame()
+{
+    BeginDrawing();
+    ClearBackground(BLACK);
+    DrawText(message, 0, 0, 20, currentPlayer);
+    DrawBoard();
+    EndDrawing();
 }
 
 void LoadGame()
 {
-    WINDOW.x = 800;
-    WINDOW.y = 600;
-    InitWindow(WINDOW.x, WINDOW.y, "Connect 4");
+    InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Connect 4");
     InitBoard();
-    InitFmod();
-    hud = Hud();
-    hud->message = yellowPlayerMessage;
-    //LoadBank("fmod/banks/Desktop/Master.bank");
-	//LoadBank("fmod/banks/Desktop/Master.strings.bank");
-    //PlayOneShotEvent("event:/Test");
-}
-
-void UpdateGame()
-{   
-    UpdateFmod();
-    switch (gameState)
-    {
-    case PLAY:
-        CheckMouseOnBoard();
-        if (IsMouseButtonPressed(0))
-        {
-            if (CheckMousePressed())
-            {
-                if (CheckVictory())
-                {
-                    gameState = VICTORY;
-                    if (CompareColor(player, YELLOW))
-                    {
-                        hud->message = yellowPlayerWins;
-                        return;
-                    }
-                    hud->message = redPlayerWins;
-                    return;
-                }
-                NextTurn();
-            }
-        }
-        break;
-        
-    case VICTORY:
-        break;
-    }
-}
-
-void DrawGame()
-{
-    BeginDrawing();
-    ClearBackground(BLACK);
-    hud->draw(hud);
-    DrawBoard();
-    EndDrawing();
+    message = yellowPlays;
 }
 
 void LoopGame()
 {
     while (!WindowShouldClose())
     {
-        UpdateGame();
+        if (!gameOver)
+            UpdateGame();
         DrawGame();
     }
 }
 
 void ReleaseGame()
 {
-    free(hud);
-    ReleaseBoard();
-    ReleaseFmod();
     CloseWindow();
 }

@@ -4,7 +4,13 @@
 #include "raylib.h"
 #include "globals.h"
 #include <stdio.h>
-#include "slot.h"
+
+struct Slot
+{
+    struct Rectangle drawRec;
+    struct Color slotColor;
+    struct Color tokenColor;
+};
 
 struct Token
 {
@@ -17,7 +23,6 @@ struct Token
 
 void InitBoard();
 void DrawBoard();
-void ReleaseBoard();
 bool CheckVictory();
 void CheckMouseOnBoard();
 bool CheckMousePressed();
