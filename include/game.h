@@ -7,7 +7,7 @@
 #include "board.h"
 
 void load_game();
-void loop_game();
+void run_game();
 void release_game();
 
 #endif
