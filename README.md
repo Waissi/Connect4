@@ -1,4 +1,4 @@
-# CONNECT 4
+# CONNECT 4 - A Game Classic
 
 This game was made of out of curiosity for [Raylib](https://www.raylib.com/), and the desire to build a small game in C in the simpliest manner.  
 
