@@ -1,6 +1,6 @@
 # CONNECT 4
 
-A [Connect 4](https://en.wikipedia.org/wiki/Connect_Four) game was made of out of curiosity for [Raylib](https://www.raylib.com/), and the desire to build a small game in C in the simpliest manner.  
+This [Connect 4](https://en.wikipedia.org/wiki/Connect_Four) game was made of out of curiosity for [Raylib](https://www.raylib.com/), and the desire to build a small game in C in the simpliest manner.  
 
 # Build
 This project uses the [Zig build system](https://ziglang.org/learn/build-system/) but alternatives are possible, see [instructions for Raylib](https://github.com/raysan5/raylib?tab=readme-ov-file#build-and-installation). 
