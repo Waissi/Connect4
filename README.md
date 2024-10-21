@@ -27,4 +27,4 @@ zig-out/bin/Connect4
 ````
 
 Enjoy!  
-![screenshot](Screenshot.png)
+![screenshot](https://github.com/Waissi/Connect4-game-classic/blob/94ff2414398734323a024e858772bcfd20b93175/Screenshot.png)
