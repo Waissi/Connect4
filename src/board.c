@@ -21,7 +21,7 @@ static bool diagonal_sw_ne_wins()
             total++;
             if (total == 4)
             {
-                board[0][lastMove.column].slotColor = BOARD_COLOR;
+                board[0][lastMove.column].slotColor = DARKBLUE;
                 return true;
             }
         }
@@ -53,7 +53,7 @@ static bool diagonal_se_nw_wins()
             total++;
             if (total == 4)
             {
-                board[0][lastMove.column].slotColor = BOARD_COLOR;
+                board[0][lastMove.column].slotColor = DARKBLUE;
                 return true;
             }
         }
@@ -79,7 +79,7 @@ static bool horizontal_wins()
             total++;
             if (total == 4)
             {
-                board[0][lastMove.column].slotColor = BOARD_COLOR;
+                board[0][lastMove.column].slotColor = DARKBLUE;
                 return true;
             }
         }
@@ -103,7 +103,7 @@ static bool vertical_wins()
             total++;
             if (total == 4)
             {
-                board[0][lastMove.column].slotColor = BOARD_COLOR;
+                board[0][lastMove.column].slotColor = DARKBLUE;
                 return true;
             }
         }
@@ -131,7 +131,7 @@ static void fill_column(int column)
             lastMove.column = column;
             if (is_column_full(column))
             {
-                board[row][column].slotColor = BOARD_COLOR;
+                board[row][column].slotColor = DARKBLUE;
             }
             return;
         }
@@ -170,7 +170,7 @@ void on_mouse_moved()
         }
         else
         {
-            board[0][column].slotColor = BOARD_COLOR;
+            board[0][column].slotColor = DARKBLUE;
         }
     }
 }
@@ -185,13 +185,16 @@ void init_board()
         {
             int x = posX + SLOT_WIDTH * column;
             int y = posY + SLOT_HEIGHT * row;
-            struct Slot newSlot;
-            newSlot.drawRec.x = x;
-            newSlot.drawRec.y = y;
-            newSlot.drawRec.height = SLOT_HEIGHT - 2;
-            newSlot.drawRec.width = SLOT_WIDTH - 2;
-            newSlot.slotColor = BOARD_COLOR;
-            newSlot.tokenColor = BLACK;
+            struct Slot newSlot =
+                {
+                    .drawRec = {
+                        .x = x,
+                        .y = y,
+                        .height = SLOT_HEIGHT - 2,
+                        .width = SLOT_WIDTH - 2},
+                    .tokenColor = BLACK,
+                    .slotColor = DARKBLUE,
+                };
             board[row][column] = newSlot;
         }
     }

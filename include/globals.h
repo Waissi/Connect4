@@ -1,9 +1,6 @@
 #ifndef _GLOBALS_H
 #define _GLOBALS_H
 
-#include "raylib.h"
-
-#define BOARD_COLOR DARKBLUE;
 #define SLOT_WIDTH 40
 #define SLOT_HEIGHT 40
 #define WINDOW_WIDTH 800
