@@ -185,17 +185,16 @@ void init_board()
         {
             int x = posX + SLOT_WIDTH * column;
             int y = posY + SLOT_HEIGHT * row;
-            struct Slot newSlot =
-                {
-                    .drawRec = {
-                        .x = x,
-                        .y = y,
-                        .height = SLOT_HEIGHT - 2,
-                        .width = SLOT_WIDTH - 2},
-                    .tokenColor = BLACK,
-                    .slotColor = DARKBLUE,
-                };
-            board[row][column] = newSlot;
+            board[row][column] = (struct Slot){
+                .drawRec = {
+                    .x = x,
+                    .y = y,
+                    .height = SLOT_HEIGHT - 2,
+                    .width = SLOT_WIDTH - 2},
+                .tokenColor = BLACK,
+                .slotColor = DARKBLUE,
+            };
+            ;
         }
     }
 }
