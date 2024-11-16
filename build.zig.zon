@@ -1,0 +1,10 @@
+.{
+    .name = "raylib",
+    .version = "0.0.0",
+    .dependencies = .{
+        .libraylib = .{
+            .path = "deps/raylib",
+        },
+    },
+    .paths = .{""},
+}
