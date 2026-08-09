@@ -1,4 +1,7 @@
 #include "game.h"
+#include "board.h"
+#include "globals.h"
+#include "raylib.h"
 
 bool gameOver = false;
 struct Color currentPlayer = YELLOW;
@@ -9,59 +12,49 @@ const char *redWins = "RED WINS";
 const char *restart = "PRESS ENTER TO START NEW GAME";
 const char *message = NULL;
 
-static void update()
-{
-    if (gameOver)
-    {
-        if (IsKeyPressed(KEY_ENTER))
-            load_game();
-        return;
+static void update(void) {
+  if (gameOver) {
+    if (IsKeyPressed(KEY_ENTER))
+      load_game();
+    return;
+  }
+  on_mouse_moved();
+  if (IsMouseButtonPressed(0) && on_mouse_pressed()) {
+    if (last_move_wins()) {
+      gameOver = true;
+      message = compare_color(currentPlayer, YELLOW) ? yellowWins : redWins;
+      return;
     }
-    on_mouse_moved();
-    if (IsMouseButtonPressed(0) && on_mouse_pressed())
-    {
-        if (last_move_wins())
-        {
-            gameOver = true;
-            message = compare_color(currentPlayer, YELLOW) ? yellowWins : redWins;
-            return;
-        }
-        currentPlayer = compare_color(currentPlayer, YELLOW) ? RED : YELLOW;
-        message = compare_color(currentPlayer, YELLOW) ? yellowPlays : redPlays;
-    }
+    currentPlayer = compare_color(currentPlayer, YELLOW) ? RED : YELLOW;
+    message = compare_color(currentPlayer, YELLOW) ? yellowPlays : redPlays;
+  }
 }
 
-static void draw()
-{
-    BeginDrawing();
-    ClearBackground(BLACK);
-    DrawText(message, WINDOW_WIDTH / 2 - MeasureText(message, 20) / 2, 0, 20, currentPlayer);
-    if (gameOver)
-    {
-        DrawText(restart, WINDOW_WIDTH / 2 - MeasureText(restart, 20) / 2, 40, 20, RAYWHITE);
-    }
-    draw_board();
-    EndDrawing();
+static void draw(void) {
+  BeginDrawing();
+  ClearBackground(BLACK);
+  DrawText(message, WINDOW_WIDTH / 2 - MeasureText(message, 20) / 2, 0, 20,
+           currentPlayer);
+  if (gameOver) {
+    DrawText(restart, WINDOW_WIDTH / 2 - MeasureText(restart, 20) / 2, 40, 20,
+             RAYWHITE);
+  }
+  draw_board();
+  EndDrawing();
 }
 
-void load_game()
-{
-    InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Connect 4");
-    init_board();
-    message = yellowPlays;
-    gameOver = false;
+void load_game(void) {
+  InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Connect 4");
+  init_board();
+  message = yellowPlays;
+  gameOver = false;
 }
 
-void run_game()
-{
-    while (!WindowShouldClose())
-    {
-        update();
-        draw();
-    }
+void run_game(void) {
+  while (!WindowShouldClose()) {
+    update();
+    draw();
+  }
 }
 
-void release_game()
-{
-    CloseWindow();
-}
+void release_game(void) { CloseWindow(); }

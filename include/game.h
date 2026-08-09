@@ -2,12 +2,9 @@
 #define _GAME_H
 
 #include <stdlib.h>
-#include "raylib.h"
-#include "globals.h"
-#include "board.h"
 
-void load_game();
-void run_game();
-void release_game();
+void load_game(void);
+void run_game(void);
+void release_game(void);
 
 #endif

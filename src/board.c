@@ -1,9 +1,10 @@
 #include "board.h"
+#include "globals.h"
 
 struct Slot board[BOARD_ROWS][BOARD_COLUMNS];
 struct Token lastMove;
 
-static bool diagonal_sw_ne_wins() {
+static bool diagonal_sw_ne_wins(void) {
   int total = 0;
   int rowOrigin = lastMove.row;
   int columnOrigin = lastMove.column;
@@ -28,7 +29,7 @@ static bool diagonal_sw_ne_wins() {
   return false;
 }
 
-static bool diagonal_se_nw_wins() {
+static bool diagonal_se_nw_wins(void) {
   int total = 0;
   int rowOrigin = lastMove.row;
   int columnOrigin = lastMove.column;
@@ -53,7 +54,7 @@ static bool diagonal_se_nw_wins() {
   return false;
 }
 
-static bool horizontal_wins() {
+static bool horizontal_wins(void) {
   int total = 0;
   struct Color currentColor;
   for (int column = 0; column < BOARD_COLUMNS; column++) {
@@ -71,7 +72,7 @@ static bool horizontal_wins() {
   return false;
 }
 
-static bool vertical_wins() {
+static bool vertical_wins(void) {
   int total = 0;
   struct Color currentColor;
   for (int row = 0; row < BOARD_ROWS; row++) {
@@ -107,12 +108,12 @@ static void fill_column(int column) {
   }
 }
 
-bool last_move_wins() {
+bool last_move_wins(void) {
   return horizontal_wins() || vertical_wins() || diagonal_sw_ne_wins() ||
          diagonal_se_nw_wins();
 }
 
-bool on_mouse_pressed() {
+bool on_mouse_pressed(void) {
   for (int column = 0; column < BOARD_COLUMNS; column++) {
     if (compare_color(board[0][column].slotColor, currentPlayer)) {
       fill_column(column);
@@ -122,7 +123,7 @@ bool on_mouse_pressed() {
   return false;
 }
 
-void on_mouse_moved() {
+void on_mouse_moved(void) {
   for (int column = 0; column < BOARD_COLUMNS; column++) {
     if (CheckCollisionPointRec(GetMousePosition(), board[0][column].drawRec)) {
       if (is_column_full(column)) {
@@ -135,7 +136,7 @@ void on_mouse_moved() {
   }
 }
 
-void init_board() {
+void init_board(void) {
   int posX = WINDOW_WIDTH / 2 - SLOT_WIDTH * BOARD_COLUMNS / 2;
   int posY = WINDOW_HEIGHT / 2 - SLOT_HEIGHT * BOARD_ROWS / 2;
   for (int row = 0; row < BOARD_ROWS; row++) {
@@ -155,7 +156,7 @@ void init_board() {
   }
 }
 
-void draw_board() {
+void draw_board(void) {
   for (int row = 0; row < BOARD_ROWS; row++) {
     for (int column = 0; column < BOARD_COLUMNS; column++) {
       struct Slot slot = board[row][column];
